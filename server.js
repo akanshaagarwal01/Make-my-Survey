@@ -11,9 +11,6 @@ const con = mysql.createConnection({
     database: "mocksurvey"
 });
 
-// app.use(bodyParser.urlencoded({ extended: false }));
-
-// parse application/json
 app.use(bodyParser.json());
 
 app.use(function (req, res, next) {
@@ -22,11 +19,16 @@ app.use(function (req, res, next) {
     next();
 });
 
+app.listen(8081, 'localhost', 0, function () {
+    con.connect(function(err) {
+        if (!err) {
+            console.log("Connection success");
+        }
+    });
+});
+
 app.get('/users/:userName', function (req, res) {
-    console.log("ca", req.params);
-    // res.writeHead(200, { 'content-Type': 'text/html' });
-    res.send(`Welcome ${req.params.userName}`);
-    // res.end();
+    res.send({msg : `Welcome ${req.params.userName}`});
 });
 
 app.post('/signUp', function (req, res) {
@@ -35,28 +37,32 @@ app.post('/signUp', function (req, res) {
         values = `${values}, '${req.body[key]}'`;
     }
     values = values.substring(1);
-    let sql = `INSERT INTO user_details VALUES (${values})`;
+    let sql = `INSERT INTO user_details (username,password,email,firstname,lastname) VALUES (${values})`;
     con.query(sql, function (err, result) {
         if (err) {
             res.status(400).send("query_error");
         } else {
-            // res.status(200).send("ok");
             res.redirect(`/users/${req.body.username}`);
         }
     })
 });
 
 app.post('/login', function (req, res) {
-
-});
-
-
-app.listen(8081, 'localhost', 0, function () {
-    con.connect(function r(err) {
-        if (!err) {
-            console.log(
-                "Connection success"
-            )
+    let sql = `SELECT username,password FROM user_details WHERE username = "${req.body.username}"`;
+    con.query(sql,function(err,result){
+        if (err) {
+            res.status(400).send("query_error");
+        } 
+        else if(!result.length) {
+            res.send({msg : `No such user record`});
         }
-    });
+        else if(result[0].password === req.body.password){
+            res.redirect(`/users/${req.body.username}`);
+        }
+        else {
+            res.send({msg : `Incorrect Password ! Retry ?`});
+        }
+    })
 });
+
+
