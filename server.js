@@ -28,7 +28,7 @@ app.listen(8081, 'localhost', 0, function () {
 });
 
 app.get('/users/:userName', function (req, res) {
-    res.send({msg : `Welcome ${req.params.userName}`});
+    res.send({msg : `${req.params.userName}`});
 });
 
 app.post('/signUp', function (req, res) {

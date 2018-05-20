@@ -1,23 +1,33 @@
 (function () {
     class User {
         constructor(userDetails) {
-            this.initializeDOMElements();
+            
+        }
+
+        displayGreetings() {
+            let queryString = location.search;
+            let name = queryString.split('=');
+            this._DOMElements.greeting.innerHTML = `Welcome ${name[1]}`
         }
 
         initializeDOMElements() {
             this._DOMElements = {
-                page2: document.getElementById("page2"),
+                greeting: document.getElementById("greeting"),
                 createSurveyBtn: document.getElementById("createSurveyBtn")
-            }
+            };
+            this._DOMElements.createSurveyBtn.addEventListener("click", this.createSurvey);
         }
 
         createSurvey() {
-            this._DOMElements.page2.innerHTML = "";
             
         }
 
 
 
     }
-    window.User = User;
+    
+    let user = new User();
+    user.initializeDOMElements();
+    user.displayGreetings();
+    
 })();
