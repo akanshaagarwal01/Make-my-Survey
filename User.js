@@ -19,7 +19,9 @@
         }
 
         createSurvey() {
-            
+            let surveyDetails = {
+                //title : ;
+            };
         }
 
 

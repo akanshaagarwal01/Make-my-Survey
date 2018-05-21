@@ -24,7 +24,7 @@
             this._DOMElements.loginButton.addEventListener("click", this.logInUser.bind(this));
         }
 
-        signUpNewUser(event) {
+        signUpNewUser() {
             let userDetails = {
                 username: this._DOMElements.signUpUserName.value,
                 password: this._DOMElements.signUpPassword.value,
@@ -46,7 +46,7 @@
             }
         }
 
-        logInUser(event) {
+        logInUser() {
             let userDetails = {
                 username: this._DOMElements.loginUserName.value,
                 password: this._DOMElements.loginPassword.value
